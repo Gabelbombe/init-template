@@ -6,9 +6,6 @@ restart and status commands.
 Handy for [Node.js](http://http://nodejs.org/) apps and everything
 else that runs itself.
 
-Getting started
----------------
-
 Copy _template_ to /etc/init.d and rename it to something
 meaningful. Then edit the script and enter that name after _Provides:_
 (between _### BEGIN INIT INFO_ and _### END INIT INFO_).
@@ -28,15 +25,16 @@ The command line to start the process.
 The user that should execute the command (optional).
 If not set, the command will be called as root (via `sudo ...`).
 
-Here's an example for an app called
-[algorithms](http://algorithms.ubercode.de):
 
-    dir="/var/apps/algorithms"
-    cmd="node server.js"
-    user="node"
+```bash
+dir=""        ## /usr/local/bin
+cmd=""        ## foo-1.2 {ARGS}
+cnf=""        ## /etc/foo.conf
+user=""       ## bar
+lopts=""      ## --config
+```
 
-Script usage
-------------
+#### Usage
 
 ##### Start
 
