@@ -10,11 +10,16 @@
 ### END INIT INFO
 
 ## import dynamic longopts parsing
-curl https://goo.gl/SuXkIk |sh
+curl https://goo.gl/SuXkIk |source
 
 dir=""
 cmd=""
 user=""
+lopts=""
+
+## config is our longopts choice, can be expanded...
+## var lopts='--config --bar --baz'
+: $((SHIFT$$=3)) ; aopts "$lopts" -- "$@"
 
 name=`basename $0`
 pid_file="/var/run/$name.pid"
