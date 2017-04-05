@@ -12,14 +12,24 @@
 ## import dynamic longopts parsing
 curl https://goo.gl/SuXkIk |source
 
-dir=""
-cmd=""
-user=""
-lopts=""
+dir=""        ## /usr/local/bin
+cmd=""        ## foo-1.2 {ARGS}
+cnf=""        ## /etc/foo.conf
+user=""       ## bar
+lopts=""      ## --config
+
+[ -f "$cnf" ] && . "$cnf"
 
 ## config is our longopts choice, can be expanded...
 ## var lopts='--config --bar --baz'
-: $((SHIFT$$=3)) ; aopts "$lopts" -- "$@"
+flag="$(aopts \"$lopts\" -- \"$@\")"
+
+## NOTE: needs positional shifting somewhere here but i dont wanna go down another rabbit hole...
+# for opt in ${1+"$@"} ; do
+#  .. some wizardry > tmp=${tmp + opt} #etc
+# done
+#flag={slicing above for validity}
+
 
 name=`basename $0`
 pid_file="/var/run/$name.pid"
@@ -45,9 +55,9 @@ case "$1" in
         cd "$dir"
 
         if [ -z "$user" ] ; then
-            sudo $cmd >> "$stdout_log" 2>> "$stderr_log" &
+            sudo $cmd "$flag" >> "$stdout_log" 2>> "$stderr_log" &
         else
-            sudo -u "$user" $cmd >> "$stdout_log" 2>> "$stderr_log" &
+            sudo -u "$user" $cmd "$flag" >> "$stdout_log" 2>> "$stderr_log" &
         fi
 
         echo $! > "$pid_file"
